@@ -4,15 +4,13 @@ import Row2 from './Row2';
 import Row3 from './Row3';
 
 const gridTemplateLargeScreens = `
-  "a a a"
-  "a a a"
-  "a a a"
-  "a a a"
-  "a a a"
-  "a a a"
+  "a b c"
+  "a b c"
+  "a b c"
+  "a b f"
   "d e f"
   "d e f"
-  "g h i"
+  "d h i"
   "g h i"
   "g h j"
   "g h j"

@@ -62,6 +62,7 @@ export const themeSettings = {
     grey: {
       ...tokens.grey,
       main: tokens.grey[500],
+      light: tokens.grey[100],
     },
     background: {
       default: tokens.background.main,

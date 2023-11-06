@@ -20,6 +20,18 @@ export interface Day {
   expenses: number;
 }
 
+export interface rankingItem {
+  fullName: string;
+  university: string;
+  wave: string;
+  categoryRanking: {
+    totalC1: number;
+    totalC2: number;
+    totalC3: number;
+  }
+  total: number;
+}
+
 export interface GetKpisResponse {
   id: string;
   _id: string;
@@ -54,4 +66,65 @@ export interface GetTransactionsResponse {
   productIds: Array<string>;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface GetXLSResponse {
+  rows: Array<XLS>;
+}
+
+export interface GetSurveyResponse {
+  university: string;
+  wave: string;
+  rows: Array<XLS>;
+  _id: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GetRankingResponse {
+  fullName: string;
+  university: string;
+  wave: string;
+  categoryRanking: {
+    totalC1: number;
+    totalC2: number;
+    totalC3: number;
+  }
+  total: number;
+}
+
+export interface XLS {
+  id: string;
+  university: string;
+  wave: string;
+  fullName: string;
+  question01: number;
+  question02: number;
+  question03: number;
+  question04: number;
+  question05: number;
+  question06: number;
+  question07: number;
+  question08: number;
+  question09: number;
+  question10: number;
+  question11: number;
+  question12: number;
+  question13: number;
+  question14: number;
+  question15: number;
+  question16: number;
+  question17: number;
+  question18: number;
+  question19: number;
+  question20: number;
+  question21: number;
+  question22: number;
+  question23: number;
+  question24: number;
+  question25: number;
+  question26: number;
+  question27: number;
+  question28: number;
 }

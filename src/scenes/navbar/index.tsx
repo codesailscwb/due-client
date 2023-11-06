@@ -13,7 +13,7 @@ const Navbar = () => {
       {/* LEFT SIDE */}
       <FlexBetween gap="0.75rem">
         <PixIcon sx={{ fontSize: "28px" }}/>
-        <Typography variant="h4" fontSize="16px">Finanseer</Typography>
+        <Typography variant="h4" fontSize="16px">SEBRAE DUE</Typography>
       </FlexBetween>
 
       {/* RIGHT SIDE */}
@@ -28,6 +28,18 @@ const Navbar = () => {
             }}
             >
               Dashboard
+            </Link>
+        </Box>
+        <Box sx={{ "&:hover": { color: palette.primary[100]} }}>
+          <Link
+            to="/upload"
+            onClick={() => setSelected("upload")}
+            style={{
+              color: selected === "upload" ? "inherit" : palette.grey[700],
+              textDecoration: "inherit"
+            }}
+            >
+              Upload
             </Link>
         </Box>
         <Box sx={{ "&:hover": { color: palette.primary[100]} }}>
