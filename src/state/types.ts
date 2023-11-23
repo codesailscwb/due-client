@@ -135,3 +135,9 @@ export interface XLS {
   question27: number;
   question28: number;
 }
+
+export interface ExpensesByCategoryX {
+  salaries: number;
+  supplies: number;
+  services: number;
+}
