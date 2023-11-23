@@ -222,7 +222,7 @@ const Row1 = () => {
 
   return (
     <>
-      {!survey ? "Carregando" : 
+      {!survey ? "Carregando dados" : 
       
       <><DashboardBox gridArea="a">
           <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
