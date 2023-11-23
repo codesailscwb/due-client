@@ -75,7 +75,7 @@ const Dashboard = () => {
         }
       }
     >        
-      {survey?.length == 0 ? 
+      {survey?.length == 0 || survey == undefined ? 
       <Typography m="0.3rem 0" sx={{
         fontSize: 24,
         color: palette.primary[300]
