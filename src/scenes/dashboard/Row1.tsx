@@ -6,7 +6,7 @@ import { GetSurveyResponse, Waves } from '@/state/types';
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useMemo, useState } from "react";
-import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Sector } from 'recharts';
+import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Sector, BarChart, ReferenceLine, Bar } from 'recharts';
 import { v4 as uuidv4 } from "uuid";
 
 
@@ -161,6 +161,96 @@ const Row1 = () => {
     return result;
   }
 
+  const countRowsByGender = (survey: GetSurveyResponse[], gender: string) => {
+    let rowCount = 0;
+  
+    survey.forEach((item: { rows: any[]; }) => {
+      item.rows.forEach(row => {
+        row.forEach((person: { gender: any; }) => {
+          if (person.gender === gender) {
+            rowCount++;
+          }
+        });
+      });
+    });
+  
+    return rowCount;
+  };
+
+  // const countRowsByGenderAndWave = (survey: GetSurveyResponse[]) => {
+  //   const genderWaveCounts = [];
+  
+  //   survey.forEach(item => {
+  //     const wave = item.wave;
+  
+  //     if (!genderWaveCounts[wave]) {
+  //       genderWaveCounts[wave] = {
+  //         masculino: 0,
+  //         feminino: 0
+  //       };
+  //     }
+  
+  //     item.rows.forEach(row => {
+  //       row.forEach(person => {
+  //         if (person.gender === 'masculino') {
+  //           genderWaveCounts[wave].masculino++;
+  //         } else if (person.gender === 'feminino') {
+  //           genderWaveCounts[wave].feminino++;
+  //         }
+  //       });
+  //     });
+  //   });
+  
+  //   return genderWaveCounts;
+  // };
+
+  const countRowsByGenderAndWave = (survey: GetSurveyResponse[]) => {
+    const genderWaveCounts = [];
+  
+    survey.forEach(item => {
+      const wave = item.wave;
+  
+      // Check if the wave already exists in the output array
+      const existingWave = genderWaveCounts.find(obj => obj.wave === wave);
+  
+      if (!existingWave) {
+        const counts = {
+          wave,
+          masculino: 0,
+          feminino: 0
+        };
+  
+        item.rows.forEach(row => {
+          row.forEach(person => {
+            if (person.gender === 'masculino') {
+              counts.masculino++;
+            } else if (person.gender === 'feminino') {
+              counts.feminino--;
+            }
+          });
+        });
+  
+        genderWaveCounts.push(counts);
+      } else {
+        item.rows.forEach(row => {
+          row.forEach(person => {
+            if (person.gender === 'masculino') {
+              existingWave.masculino++;
+            } else if (person.gender === 'feminino') {
+              existingWave.feminino--;
+            }
+          });
+        });
+      }
+    });
+    return genderWaveCounts;
+};
+
+const tooltipFormatter = (value: number, name: string, props: any) => {
+  // Show absolute (positive) values for female data in the tooltip
+  return name === 'feminino' ? `${Math.abs(value)}` : value;
+};
+  
   const wavesData = useMemo(() => {
     if (survey){
       const waveCountObj = countBy(survey, 'wave');
@@ -168,7 +258,18 @@ const Row1 = () => {
       const wavesCount = waves.length;
       const lastWave = ( waveCountObj ? (Object.keys(waveCountObj).reduce((a, b) => a > b ? a : b)) : [0]);
       const answersByWave = countNumberOfAnswers(survey);
-      const answersPerUniversityForWave = getNumberOfAnswersPerUniversityForWave(survey, selectedWave)
+      const answersPerUniversityForWave = getNumberOfAnswersPerUniversityForWave(survey, selectedWave);
+
+      // Count rows for each gender
+      const countMaleRows = countRowsByGender(survey, 'masculino');
+      const countFemaleRows = countRowsByGender(survey, 'feminino');
+      
+      console.log(`Number of rows for males: ${countMaleRows}`);
+      console.log(`Number of rows for females: ${countFemaleRows}`);
+
+      const countsByGenderAndWave = countRowsByGenderAndWave(survey);
+
+      console.log(countsByGenderAndWave);
       
       let answersLastWave = 0;
      
@@ -187,6 +288,7 @@ const Row1 = () => {
         answersByWave: answersByWave,
         answersLastWave: answersLastWave,
         answersPerUniversityForWave: answersPerUniversityForWave,
+        countsByGenderAndWave: countsByGenderAndWave,
     }
     }
   }, [survey, selectedWave]);  
@@ -297,7 +399,7 @@ const Row1 = () => {
             </ResponsiveContainer>
           </DashboardBox><DashboardBox gridArea="d">
             <FlexBetween>
-              <Box>
+              <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
                 <BoxHeader title="Repondentes por Instituição por Onda" sideText="" />
               </Box>
               <Box>
@@ -341,7 +443,38 @@ const Row1 = () => {
                   onMouseEnter={onPieEnter} />
               </PieChart>
             </ResponsiveContainer>
-          </DashboardBox></>
+          </DashboardBox>
+          <DashboardBox gridArea="f">
+          <Box ml="1.5rem" mt="1rem" mb="1rem" flexBasis="40%" textAlign="center">
+            <BoxHeader title="Distribuição por sexo" sideText="" />
+          </Box>
+          <ResponsiveContainer width="100%" height="80%">
+            <BarChart
+                width={500}
+                height={300}
+                data={wavesData?.countsByGenderAndWave}
+                stackOffset='sign'
+                reverseStackOrder={true}
+                layout="vertical"
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" hide={true}/>
+                <YAxis dataKey="wave" type="category"/>
+                <Tooltip formatter={tooltipFormatter} />
+                <Legend />
+                {/* <ReferenceLine x={0} stroke="#000" /> */}
+                <Bar dataKey="masculino" fill="#8884d8" stackId="stack" />
+                <Bar dataKey="feminino" fill="#82ca9d" stackId="stack" />
+              </BarChart>
+            </ResponsiveContainer>
+          </DashboardBox>
+          </>
       }
     </>
   )
