@@ -1,21 +1,26 @@
-import { Box, useMediaQuery  } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme  } from '@mui/material';
 import Row1 from './Row1';
-import Row2 from './Row2';
-import Row3 from './Row3';
+import { useGetSurveysQuery } from '@/state/api';
+// import Row2 from './Row2';
+// import Row3 from './Row3';
 
 const gridTemplateLargeScreens = `
-  "a a a"
-  "a a a"
-  "a a a"
-  "a a a"
-  "a a a"
-  "a a a"
-  "d e f"
-  "d e f"
-  "g h i"
-  "g h i"
-  "g h j"
-  "g h j"
+  "a b c"
+  "a b c"
+  "d e c"
+  "d e c"
+  "d f f"
+  "d f f"
+  // "a a a"
+  // "a a a"
+  // "a a a"
+  // "a a a"
+  // "b c f"
+  // "b c f"
+  // "g h i"
+  // "g h i"
+  // "g h j"
+  // "g h j"
 `;
 const gridTemplateSmallScreens = `
   "a"
@@ -51,6 +56,9 @@ const gridTemplateSmallScreens = `
 `;
 
 const Dashboard = () => {
+  const { palette } = useTheme();
+  const { data: survey } = useGetSurveysQuery();
+  console.log('survey',survey)
   const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
 
   return (
@@ -66,10 +74,17 @@ const Dashboard = () => {
           gridTemplateAreas: gridTemplateSmallScreens,
         }
       }
-    >
-      <Row1 />
-      <Row2 />
-      <Row3 />
+    >        
+      {survey?.length == 0 ? 
+      <Typography m="0.3rem 0" sx={{
+        fontSize: 24,
+        color: palette.primary[300]
+      }}>
+        "Carregue uma pesquisa na aba Upload": 
+      </Typography> 
+      :
+        <Row1 />
+      }
     </Box>
   )
 }

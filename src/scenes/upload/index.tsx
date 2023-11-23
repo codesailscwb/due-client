@@ -95,6 +95,8 @@ const Upload = () => {
       university: obj["university"] || "",
       wave: obj["wave"] || "",
       fullName: obj["fullName"] || "",
+      birthdate: obj["birthdate"] || "",
+      gender: obj["gender"] || "",
       question01: obj["question01"] || "",
       question02: obj["question02"] || "",
       question03: obj["question03"] || "",
@@ -138,6 +140,16 @@ const Upload = () => {
     {
       field: 'fullName',
       headerName: 'Nome',
+      width:180,
+    },
+    {
+      field: 'birthdate',
+      headerName: 'Nascimento',
+      width:180,
+    },
+    {
+      field: 'gender',
+      headerName: 'Sexo',
       width:180,
     },
     {

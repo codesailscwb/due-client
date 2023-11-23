@@ -12,12 +12,8 @@ import {
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_BASE_URL }),
   reducerPath: "main",
-  tagTypes: ["Kpis", "Products", "Transactions", "XLSlines", "Surveys", "Rankings"],
+  tagTypes: ["XLSlines", "Surveys", "Rankings"],
   endpoints: (build) => ({
-    getKpis: build.query<Array<GetKpisResponse>, void>({
-      query: () => "kpi/kpis/",
-      providesTags: ["Kpis"],
-    }),
     getXLSlines: build.query<Array<GetXLSResponse>, void>({
       query: () => "xlslines/xlslines",
       providesTags: ["XLSlines"],
@@ -48,16 +44,8 @@ export const api = createApi({
       query: () => "ranking/rankings",
       providesTags: ["Rankings"],
     }),
-    getProducts: build.query<Array<GetProductsResponse>, void>({
-      query: () => "product/products/",
-      providesTags: ["Products"],
-    }),
-    getTransactions: build.query<Array<GetTransactionsResponse>, void>({
-      query: () => "transaction/transactions/",
-      providesTags: ["Transactions"],
-    }),
   }),
 });
 
-export const { useGetKpisQuery, useGetProductsQuery, useGetTransactionsQuery, useGetXLSlinesQuery, useAddXLSMutation, useAddSurveyMutation, useGetSurveysQuery, useGetRankingsQuery } =
+export const { useGetXLSlinesQuery, useAddXLSMutation, useAddSurveyMutation, useGetSurveysQuery, useGetRankingsQuery } =
   api;

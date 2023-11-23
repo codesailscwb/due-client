@@ -5,7 +5,7 @@ import { themeSettings } from "./theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavBar from "@/scenes/navbar";
 import Dashboard from "@/scenes/dashboard";
-import Predictions from "@/scenes/predictions";
+// import Predictions from "@/scenes/predictions";
 import Upload from "@/scenes/upload";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/upload" element={<Upload />} />
-              <Route path="/predictions" element={<Predictions />} />
+              {/* <Route path="/predictions" element={<Predictions />} /> */}
             </Routes>
           </Box>
         </ThemeProvider>

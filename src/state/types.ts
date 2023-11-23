@@ -68,6 +68,11 @@ export interface GetTransactionsResponse {
   updatedAt: string;
 }
 
+export interface Waves {
+  wave: string;
+  answers: number;
+}
+
 export interface GetXLSResponse {
   rows: Array<XLS>;
 }
@@ -99,6 +104,8 @@ export interface XLS {
   university: string;
   wave: string;
   fullName: string;
+  birthdate: string;
+  gender: string;
   question01: number;
   question02: number;
   question03: number;
