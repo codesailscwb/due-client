@@ -377,10 +377,11 @@ const tooltipFormatter = (value: number, name: string) => {
                   stroke={palette.tertiary[500]} />
               </LineChart>
             </ResponsiveContainer>
-          </DashboardBox><DashboardBox gridArea="d">
+          </DashboardBox>
+          <DashboardBox gridArea="d">
             <FlexBetween>
-              <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
-                <BoxHeader title="Repondentes por Instituição por Onda" sideText="" />
+              <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="left">
+                <BoxHeader title="Repondentes por Instituição por Onda" />
               </Box>
               <Box>
                 <Typography sx={{
@@ -454,6 +455,42 @@ const tooltipFormatter = (value: number, name: string) => {
               </BarChart>
             </ResponsiveContainer>
           </DashboardBox>
+          <DashboardBox gridArea="g">
+            
+              <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="left">
+                <BoxHeader title="Perguntas preditoras do comportamento empreendedor:" sideText="" />
+              </Box>
+              <Box>
+                <Typography sx={{
+                  fontSize: 20,
+                  color: palette.primary[200],
+                  mt: "1.5rem",
+                  mr: "1.5rem",
+                  ml: "2rem",
+                }}>
+                  12: Carrego dentro de mim, o desejo de ser dono do meu próprio negócio. Acredito que pode ser uma boa opção para realizar sonhos grandiosos que tenho.
+                </Typography>
+                <Typography sx={{
+                  fontSize: 20,
+                  color: palette.primary[400],
+                  mt: "1.5rem",
+                  mr: "1.5rem",
+                  ml: "2rem",
+                }}>
+                  24: Sinto-me inspirado(a) em pessoas que atingiram a independência financeira criando algum empreendimento.
+                </Typography>
+                <Typography sx={{
+                  fontSize: 20,
+                  color: palette.primary[600],
+                  mt: "1.5rem",
+                  mr: "1.5rem",
+                  ml: "2rem",
+                }}>
+                  25: Desde criança já inventava coisas para fazer alguma graninha extra, vendendo para a família ou conhecidos próximos.
+                </Typography>
+                </Box>
+                
+            </DashboardBox>
           </>
       }
     </>

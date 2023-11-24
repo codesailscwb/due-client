@@ -88,21 +88,6 @@ const Ranking = () => {
       {!rankingList ? "Carregando dados" : 
       <>
         <DashboardBox >
-          
-            {/* <Typography sx={{
-              fontSize: 64,
-              color: palette.primary[300]
-            }}>
-              {!ranking ? "Carregando" :
-                `${ranking.length}`}
-            </Typography>
-            <Typography m="0.3rem 0" sx={{
-              fontSize: 24,
-              color: palette.primary[300]
-            }}>
-              {!wavesData ? "Carregando" :
-                `respondentes em ${wavesData.numberOfWaves} ondas`}
-            </Typography> */}
              <div style={{ height: 850, width: "100%" }}>
               <Box
                 mt="0.5rem"
@@ -147,10 +132,8 @@ const Ranking = () => {
                   checkboxSelection
                   disableRowSelectionOnClick
                   columns={columns} />
-
                 </Box>
-              </div>
-            
+              </div>  
         </DashboardBox>
       </>
       }
