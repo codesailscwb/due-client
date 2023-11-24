@@ -177,32 +177,7 @@ const Row1 = () => {
     return rowCount;
   };
 
-  // const countRowsByGenderAndWave = (survey: GetSurveyResponse[]) => {
-  //   const genderWaveCounts = [];
   
-  //   survey.forEach(item => {
-  //     const wave = item.wave;
-  
-  //     if (!genderWaveCounts[wave]) {
-  //       genderWaveCounts[wave] = {
-  //         masculino: 0,
-  //         feminino: 0
-  //       };
-  //     }
-  
-  //     item.rows.forEach(row => {
-  //       row.forEach(person => {
-  //         if (person.gender === 'masculino') {
-  //           genderWaveCounts[wave].masculino++;
-  //         } else if (person.gender === 'feminino') {
-  //           genderWaveCounts[wave].feminino++;
-  //         }
-  //       });
-  //     });
-  //   });
-  
-  //   return genderWaveCounts;
-  // };
 
   const countRowsByGenderAndWave = (survey: GetSurveyResponse[]) => {
     const genderWaveCounts = [];

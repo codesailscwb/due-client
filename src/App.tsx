@@ -7,6 +7,7 @@ import NavBar from "@/scenes/navbar";
 import Dashboard from "@/scenes/dashboard";
 // import Predictions from "@/scenes/predictions";
 import Upload from "@/scenes/upload";
+import Ranking from "./scenes/ranking";
 
 function App() {
   const theme = useMemo(() => createTheme(themeSettings), [])
@@ -19,6 +20,7 @@ function App() {
             <NavBar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/ranking" element={<Ranking />} />
               <Route path="/upload" element={<Upload />} />
               {/* <Route path="/predictions" element={<Predictions />} /> */}
             </Routes>
