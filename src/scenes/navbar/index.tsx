@@ -13,7 +13,7 @@ const Navbar = () => {
       {/* LEFT SIDE */}
       <FlexBetween gap="0.75rem">
         <PixIcon sx={{ fontSize: "28px" }}/>
-        <Typography variant="h4" fontSize="16px">SEBRAE DUE</Typography>
+        <Typography variant="h4" fontSize="16px">Diagnóstico Universitário Empreendedor SEBRAE</Typography>
       </FlexBetween>
 
       {/* RIGHT SIDE */}

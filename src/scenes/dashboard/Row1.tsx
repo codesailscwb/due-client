@@ -200,9 +200,9 @@ const Row1 = () => {
         item.rows.forEach(row => {
           //@ts-ignore
           row.forEach(person => {
-            if (person.gender === 'Masculino') {
+            if (person.gender === 'Masculino'|| person.gender === 'masculino') {
               counts.masculino++;
-            } else if (person.gender === 'Feminino') {
+            } else if (person.gender === 'Feminino'|| person.gender === 'feminino') {
               counts.feminino--;
             }
           });
@@ -213,9 +213,9 @@ const Row1 = () => {
         item.rows.forEach(row => {
           //@ts-ignore
           row.forEach(person => {
-            if (person.gender === 'Masculino') {
+            if (person.gender === 'Masculino' || person.gender === 'masculino') {
               existingWave.masculino++;
-            } else if (person.gender === 'Feminino') {
+            } else if (person.gender === 'Feminino'|| person.gender === 'feminino') {
               existingWave.feminino--;
             }
           });
