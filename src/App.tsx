@@ -8,6 +8,7 @@ import Dashboard from "@/scenes/dashboard";
 // import Predictions from "@/scenes/predictions";
 import Upload from "@/scenes/upload";
 import Ranking from "./scenes/ranking";
+import Predictions from "./scenes/predictions";
 
 function App() {
   const theme = useMemo(() => createTheme(themeSettings), [])

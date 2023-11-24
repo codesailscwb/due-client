@@ -200,9 +200,9 @@ const Row1 = () => {
         item.rows.forEach(row => {
           //@ts-ignore
           row.forEach(person => {
-            if (person.gender === 'masculino') {
+            if (person.gender === 'Masculino') {
               counts.masculino++;
-            } else if (person.gender === 'feminino') {
+            } else if (person.gender === 'Feminino') {
               counts.feminino--;
             }
           });
@@ -213,9 +213,9 @@ const Row1 = () => {
         item.rows.forEach(row => {
           //@ts-ignore
           row.forEach(person => {
-            if (person.gender === 'masculino') {
+            if (person.gender === 'Masculino') {
               existingWave.masculino++;
-            } else if (person.gender === 'feminino') {
+            } else if (person.gender === 'Feminino') {
               existingWave.feminino--;
             }
           });
@@ -242,7 +242,7 @@ const tooltipFormatter = (value: number, name: string) => {
 
       // Count rows for each gender
       const countMaleRows = countRowsByGender(survey, 'masculino');
-      const countFemaleRows = countRowsByGender(survey, 'feminino');
+      const countFemaleRows = countRowsByGender(survey, 'Feminino');
       
       console.log(`Number of rows for males: ${countMaleRows}`);
       console.log(`Number of rows for females: ${countFemaleRows}`);
