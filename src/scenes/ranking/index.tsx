@@ -37,6 +37,21 @@ const Ranking = () => {
       headerName: 'Total',
       width:180,
     },
+    {
+      field: 'behavior',
+      headerName: 'Comportamento',
+      width:180,
+    },
+    {
+      field: 'personality',
+      headerName: 'Personalidade',
+      width:180,
+    },
+    {
+      field: 'hability',
+      headerName: 'Habilidade Natural',
+      width:180,
+    },
   ];
 
   function generateRandom() {
@@ -58,6 +73,9 @@ const Ranking = () => {
           fullName: fullName,
           wave: wave,
           categoryRanking: categoryRanking,
+          behavior: categoryRanking.totalC1,
+          personality: categoryRanking.totalC2,
+          hability: categoryRanking.totalC3,
           total: total,
           university: university
         };
