@@ -226,7 +226,7 @@ const Row1 = () => {
     return genderWaveCounts;
 };
 
-const tooltipFormatter = (value: number, name: string, props: any) => {
+const tooltipFormatter = (value: number, name: string) => {
   // Show absolute (positive) values for female data in the tooltip
   return name === 'feminino' ? `${Math.abs(value)}` : value;
 };
