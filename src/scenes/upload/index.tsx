@@ -145,12 +145,12 @@ const Upload = () => {
     {
       field: 'birthdate',
       headerName: 'Nascimento',
-      width:180,
+      width:90,
     },
     {
       field: 'gender',
       headerName: 'Sexo',
-      width:180,
+      width:70,
     },
     {
       field: 'question01',

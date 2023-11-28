@@ -455,7 +455,7 @@ const tooltipFormatter = (value: number, name: string) => {
               </BarChart>
             </ResponsiveContainer>
           </DashboardBox>
-          <DashboardBox gridArea="g">
+          {/* <DashboardBox gridArea="g">
             
               <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="left">
                 <BoxHeader title="Perguntas preditoras do comportamento empreendedor:" sideText="" />
@@ -490,7 +490,7 @@ const tooltipFormatter = (value: number, name: string) => {
                 </Typography>
                 </Box>
                 
-            </DashboardBox>
+            </DashboardBox> */}
           </>
       }
     </>
