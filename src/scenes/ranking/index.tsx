@@ -95,7 +95,7 @@ const Ranking = () => {
                 height="100%"
                 sx={{
                   "& .MuiDataGrid-root": {
-                    color: palette.grey[300],
+                    color: palette.grey[900],
                     border: "none",
                   },
                   "& .MuiDataGrid-cell": {
@@ -108,10 +108,10 @@ const Ranking = () => {
                     visibility: "hidden",
                   },
                   "& .MuiTablePagination-displayedRows": {
-                    color: palette.grey[100],
+                    color: palette.grey[900],
                   },
                   "& .MuiButtonBase-root":{
-                    color: palette.grey[100],
+                    color: palette.grey[900],
                   }
                 }}
               >

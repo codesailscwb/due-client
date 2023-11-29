@@ -305,7 +305,7 @@ const Upload = () => {
       {/* <FlexBetween> */}
         <FormControl>
         <FormLabel sx={{
-                color: palette.grey[100],
+                color: palette.grey[900],
                 mt: "1rem"
               }}>
                 Intituição
@@ -321,7 +321,7 @@ const Upload = () => {
               >
           </TextField>
           <FormLabel sx={{
-                color: palette.grey[100],
+                color: palette.grey[900],
                 mt: "1rem"
               }}>
                 Onda (Ano + Semestre. Ex.: 202302)
@@ -367,14 +367,14 @@ const Upload = () => {
             <Typography sx={{
               mt: "1rem",
               color: palette.primary[500],
-              backgroundColor: palette.grey[900],
+              backgroundColor: palette.grey[100],
             }}>
               Instituição: {form.university}
             </Typography>
             <Typography sx={{
               mt: "1rem",
               color: palette.primary[500],
-              backgroundColor: palette.grey[900],
+              backgroundColor: palette.grey[100],
             }}>
               Onda: {form.wave}
             </Typography>
