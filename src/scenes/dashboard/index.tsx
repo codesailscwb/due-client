@@ -82,7 +82,7 @@ const Dashboard = () => {
       {survey?.length == 0 || survey == undefined ? 
       <Typography m="0.3rem 0" sx={{
         fontSize: 24,
-        color: palette.primary[300]
+        color: palette.primary.main,
       }}>
         "Carregue uma pesquisa na aba Upload": 
       </Typography> 

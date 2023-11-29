@@ -9,11 +9,11 @@ const Navbar = () => {
 
   const [selected, setSelected] = useState('dashboard');
   return (
-    <FlexBetween mb="0.25rem" p="0.5rem 0rem" color={palette.grey[300]}>
+    <FlexBetween mb="0.25rem" p="0.5rem 0rem" color={palette.grey[900]}>
       {/* LEFT SIDE */}
       <FlexBetween gap="0.75rem">
         <PixIcon sx={{ fontSize: "28px" }}/>
-        <Typography variant="h4" fontSize="16px">Diagnóstico Universitário Empreendedor SEBRAE</Typography>
+        <Typography color={palette.grey[900]} fontSize="16px">Diagnóstico Universitário Empreendedor SEBRAE</Typography>
       </FlexBetween>
 
       {/* RIGHT SIDE */}

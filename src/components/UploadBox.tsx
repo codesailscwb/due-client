@@ -2,9 +2,9 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
 const UploadBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.grey.light,
-  borderRadius: "1rem",
-  boxShadow: "0.15rem 0.2rem 0.15rem 0.1rem rgba(0, 0, 0, .8)",
+  backgroundColor: theme.palette.primary.light,
+  borderRadius: "0.5rem",
+  boxShadow: "0.05rem 0.05rem 0.05rem 0.05rem rgba(18, 10, 143, .8)",
 }));
 
 export default UploadBox;

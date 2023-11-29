@@ -54,8 +54,8 @@ const Row1 = () => {
           outerRadius={outerRadius}
           startAngle={startAngle}
           endAngle={endAngle}
-          fill={palette.primary[500]}
-          stroke={palette.primary[700]}
+          fill={"#17a2b8"}
+          stroke={"#17a2b8"}
         />
         <Sector
           cx={cx}
@@ -64,13 +64,14 @@ const Row1 = () => {
           endAngle={endAngle}
           innerRadius={outerRadius + 6}
           outerRadius={outerRadius + 10}
-          fill={palette.primary[300]}
-          stroke={palette.primary[500]}
+          
+          fill={"#17a2b8"}
+          stroke={"#17a2b8"}
         />
-        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={palette.primary[700]} fill="none" />
-        <circle cx={ex} cy={ey} r={2} fill={palette.grey[300]} stroke={palette.grey[300]} />
+        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={"#17a2b8"} fill="none" />
+        <circle cx={ex} cy={ey} r={2} fill={"#17a2b8"} stroke={"#17a2b8"} />
         <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill={palette.primary[500]}>{`${payload.numberOfAnswers}`}</text>
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill={palette.grey[500]}>
+        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill={palette.primary[500]}>
           {`(${(percent * 100).toFixed(2)}%)`}
         </text>
       </g>
@@ -374,7 +375,7 @@ const tooltipFormatter = (value: number, name: string) => {
                   yAxisId="left"
                   type="monotone"
                   dataKey="Respondentes"
-                  stroke={palette.tertiary[500]} />
+                  stroke={"#17a2b8"} />
               </LineChart>
             </ResponsiveContainer>
           </DashboardBox>
@@ -397,7 +398,7 @@ const tooltipFormatter = (value: number, name: string) => {
                   color: palette.primary[100],
                   marginTop: "0.5rem",
                   marginLeft: "1.5rem",
-                  background: palette.grey[800]
+                  background: palette.primary.light
                 }}>
                   <option value="">Selecione</option>
                   {waves.map((wave) => (
@@ -418,8 +419,8 @@ const tooltipFormatter = (value: number, name: string) => {
                   cy="40%"
                   innerRadius={55}
                   outerRadius={100}
-                  fill={palette.primary[800]}
-                  stroke={palette.grey[900]}
+                  fill="#6c757d"
+                  stroke="#6c757d"
                   dataKey="numberOfAnswers"
                   onMouseEnter={onPieEnter} />
               </PieChart>
@@ -450,8 +451,8 @@ const tooltipFormatter = (value: number, name: string) => {
                 <Tooltip formatter={tooltipFormatter} />
                 <Legend />
                 {/* <ReferenceLine x={0} stroke="#000" /> */}
-                <Bar dataKey="masculino" fill="#8884d8" stackId="stack" />
-                <Bar dataKey="feminino" fill="#82ca9d" stackId="stack" />
+                <Bar dataKey="masculino" fill="#28a745" stackId="stack" />
+                <Bar dataKey="feminino" fill="#17a2b8" stackId="stack" />
               </BarChart>
             </ResponsiveContainer>
           </DashboardBox>

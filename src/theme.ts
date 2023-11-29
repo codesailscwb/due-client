@@ -5,22 +5,28 @@ export const tokens = {
     300: "#d1d3da",
     400: "#c2c5ce",
     500: "#b3b6c2",
-    600: "#8f929b",
+    600: "#6c757d",
     700: "#6b6d74",
     800: "#48494e",
-    900: "#242427",
+    900: "#242427", 
   },
-  primary: {
-    // light green
-    100: "#d0fcf4",
-    200: "#a0f9e9",
-    300: "#71f5de",
-    400: "#41f2d3",
-    500: "#12efc8",
-    600: "#0ebfa0",
-    700: "#0b8f78",
-    800: "#076050",
-    900: "#043028",
+  // primary: {
+  //   // light green
+  //   100: "#d0fcf4",
+  //   200: "#a0f9e9",
+  //   300: "#71f5de",
+  //   400: "#41f2d3",
+  //   500: "#12efc8",
+  //   600: "#0ebfa0",
+  //   700: "#0b8f78",
+  //   800: "#076050",
+  //   900: "#043028",
+  // },
+  primary : {
+    main: '#1976d2',
+    light: '#f8f9fa',
+    dark: '#1565c0',
+    contrastText: '#fff',
   },
   secondary: {
     // yellow
@@ -42,6 +48,11 @@ export const tokens = {
     light: "#2d2d34",
     main: "#1f2026",
   },
+  ocean: {
+    background: "#FFFFFF",
+    dark: "#191645",
+    light: "#43C6A6",
+  },
 };
 
 // mui theme settings
@@ -49,8 +60,8 @@ export const themeSettings = {
   palette: {
     primary: {
       ...tokens.primary,
-      main: tokens.primary[500],
-      light: tokens.primary[400],
+      main: tokens.primary.main,
+      light: tokens.primary.light,
     },
     secondary: {
       ...tokens.secondary,
@@ -67,6 +78,11 @@ export const themeSettings = {
     background: {
       default: tokens.background.main,
       light: tokens.background.light,
+    },
+    ocean: {
+      background: tokens.ocean.background,
+      light: tokens.ocean.light,
+      dark: tokens.ocean.dark,
     },
   },
   typography: {
