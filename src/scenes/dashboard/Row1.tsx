@@ -420,7 +420,7 @@ const tooltipFormatter = (value: number, name: string) => {
                   innerRadius={55}
                   outerRadius={100}
                   fill="#6c757d"
-                  stroke="#6c757d"
+                  stroke="#F0F0F0"
                   dataKey="numberOfAnswers"
                   onMouseEnter={onPieEnter} />
               </PieChart>
