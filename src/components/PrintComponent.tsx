@@ -4,17 +4,17 @@ import { useReactToPrint } from 'react-to-print';
 type PrintComponentProps = React.PropsWithChildren<{}>;
 
 const PrintComponent = ({ children }: PrintComponentProps) => {
-  const componentRef = useRef();
+  const componentRef = useRef<HTMLInputElement>(null);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
   return (
-    <div>
-      <div ref={componentRef}>{children}</div>
-      <button onClick={handlePrint}>Print</button>
-    </div>
+      <div>
+        <div ref={componentRef}>{children}</div>
+        <button onClick={handlePrint}>Print</button>
+      </div>
   );
 };
 
