@@ -3,26 +3,16 @@ import DashboardBox from '@/components/DashboardBox';
 import FlexBetween from '@/components/FlexBetween';
 import { useGetRankingsQuery, useGetXLSlinesQuery, useGetSurveysQuery } from '@/state/api';
 import { GetSurveyResponse, Waves } from '@/state/types';
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect, useMemo, useState } from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Sector, BarChart, ReferenceLine, Bar } from 'recharts';
-import { v4 as uuidv4 } from "uuid";
-
-
 
 const Row1 = () => {
   const { data: ranking } = useGetRankingsQuery();
-  const { data: xlsLines } = useGetXLSlinesQuery();
   const { data: survey } = useGetSurveysQuery();
-   
   const { palette } = useTheme();
-  const pieColors = [palette.primary[100], palette.grey[700], palette.primary[300], palette.grey[500], palette.primary[500], palette.grey[300], palette.primary[700], palette.primary[900]];
-
-  const [rowsDataGrid, setRowsDataGrid] = useState<any>([]);
   const [waves, setWaves] = useState<string[]>([]);
   const [selectedWave, setSelectedWave] = useState<string>('');
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_: any, index: number) => {
@@ -86,29 +76,6 @@ const Row1 = () => {
   const handleWaveSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWave(event.target.value);
   };
-
-  const columns: GridColDef[] = [
-    {
-      field: 'wave',
-      headerName: 'Onda',
-      width:180,
-    },
-    {
-      field: 'university',
-      headerName: 'Instituição',
-      width:180,
-    },
-    {
-      field: 'fullName',
-      headerName: 'Nome',
-      width:180,
-    },
-    {
-      field: 'total',
-      headerName: 'Total',
-      width:180,
-    },
-  ];
 
   const countBy = (arr: any, prop: string) => arr.reduce((prev: { [x: string]: number; }, curr: { [x: string]: string | number; }) => (prev[curr[prop]] = ++prev[curr[prop]] || 1, prev), {});
 
@@ -306,195 +273,167 @@ const tooltipFormatter = (value: number, name: string) => {
   return (
     <>
       {!survey ? "Carregando dados" : 
+      <>
+      <DashboardBox className="numberOfAnswersAllWaves" gridArea="a">
+        <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
+          <Typography sx={{
+            fontSize: 64,
+            color: palette.primary[300]
+          }}>
+            {!ranking ? "Carregando" :
+              `${ranking.length}`}
+          </Typography>
+          <Typography m="0.3rem 0" sx={{
+            fontSize: 24,
+            color: palette.primary[300]
+          }}>
+            {!wavesData ? "Carregando" :
+              `respondentes em ${wavesData.numberOfWaves} ondas`}
+          </Typography>
+        </Box>
+      </DashboardBox>
       
-      <><DashboardBox gridArea="a">
-          <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
+      <DashboardBox className="numberOfAnswersLastWave" gridArea="b">
+        <Box ml="1.5rem" mt="1rem"  textAlign="center">
+          <Typography sx={{
+            fontSize: 64,
+            color: palette.primary[300]
+          }}>
+            {!wavesData ? "Carregando" :
+              `${wavesData.answersLastWave}`}
+          </Typography>
+          <Typography m="0.3rem 0" sx={{
+            fontSize: 24,
+            color: palette.primary[300]
+          }}>
+            {!wavesData ? "Carregando" :
+              `respondentes na última onda (${wavesData.lastWave})`}
+          </Typography>
+        </Box>
+      </DashboardBox>
+      
+      <DashboardBox  className="waveEvolution" gridArea="c">
+        <BoxHeader
+          title="Evolução de repondentes por onda"
+          subtitle="considerando todas as instituições"
+          sideText="" />
+        <ResponsiveContainer  height="99%" width="99%">
+          <LineChart
+            width={500}
+            height={400}
+            data={wavesData?.answersByWave}
+            margin={{
+              top: 20,
+              right: 30,
+              left: -10,
+              bottom: 55,
+            }}
+          >
+            <CartesianGrid vertical={false} stroke={palette.grey[800]} />
+            <XAxis
+              dataKey="wave"
+              tickLine={false}
+              style={{ fontSize: "10px" }} />
+            <YAxis
+              yAxisId="left"
+              tickLine={false}
+              axisLine={false}
+              style={{ fontSize: "10px" }} />
+            <Tooltip />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="Respondentes"
+              stroke={"#17a2b8"} />
+          </LineChart>
+        </ResponsiveContainer>
+      </DashboardBox>
+      
+      <Box className="page-break" gridArea="z">
+        
+      </Box>
+      <DashboardBox className="answersByUniversityByWave" gridArea="d">
+        <FlexBetween>
+          <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="left">
+            <BoxHeader title="Repondentes por Instituição por Onda" />
+          </Box>
+          <Box>
             <Typography sx={{
-              fontSize: 64,
-              color: palette.primary[300]
+              fontSize: 14,
+              color: palette.primary[300],
+              mt: "1.5rem",
+              mr: "1.5rem"
             }}>
-              {!ranking ? "Carregando" :
-                `${ranking.length}`}
+              Selecione a onda:
             </Typography>
-            <Typography m="0.3rem 0" sx={{
-              fontSize: 24,
-              color: palette.primary[300]
+            <select value={selectedWave} onChange={handleWaveSelection} style={{
+              fontSize: 14,
+              color: palette.primary[100],
+              marginTop: "0.5rem",
+              marginLeft: "1.5rem",
+              background: palette.primary.light
             }}>
-              {!wavesData ? "Carregando" :
-                `respondentes em ${wavesData.numberOfWaves} ondas`}
-            </Typography>
+              <option value="">Selecione</option>
+              {waves.map((wave) => (
+                <option key={wave} value={wave}>
+                  {wave}
+                </option>
+              ))}
+            </select>
           </Box>
-        </DashboardBox><DashboardBox gridArea="b">
-            <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
-              <Typography sx={{
-                fontSize: 64,
-                color: palette.primary[300]
-              }}>
-                {!wavesData ? "Carregando" :
-                  `${wavesData.answersLastWave}`}
-              </Typography>
-              <Typography m="0.3rem 0" sx={{
-                fontSize: 24,
-                color: palette.primary[300]
-              }}>
-                {!wavesData ? "Carregando" :
-                  `respondentes na última onda (${wavesData.lastWave})`}
-              </Typography>
-            </Box>
-          </DashboardBox><DashboardBox gridArea="c">
-            <BoxHeader
-              title="Evolução de repondentes por onda"
-              subtitle="considerando todas as instituições"
-              sideText="" />
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                width={500}
-                height={400}
-                data={wavesData?.answersByWave}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: -10,
-                  bottom: 55,
-                }}
-              >
-                <CartesianGrid vertical={false} stroke={palette.grey[800]} />
-                <XAxis
-                  dataKey="wave"
-                  tickLine={false}
-                  style={{ fontSize: "10px" }} />
-                <YAxis
-                  yAxisId="left"
-                  tickLine={false}
-                  axisLine={false}
-                  style={{ fontSize: "10px" }} />
-
-                <Tooltip />
-
-                <Line
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="Respondentes"
-                  stroke={"#17a2b8"} />
-              </LineChart>
-            </ResponsiveContainer>
-          </DashboardBox>
-          <DashboardBox gridArea="d">
-            <FlexBetween>
-              <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="left">
-                <BoxHeader title="Repondentes por Instituição por Onda" />
-              </Box>
-              <Box>
-                <Typography sx={{
-                  fontSize: 14,
-                  color: palette.primary[300],
-                  mt: "1.5rem",
-                  mr: "1.5rem"
-                }}>
-                  Selecione a onda:
-                </Typography>
-                <select value={selectedWave} onChange={handleWaveSelection} style={{
-                  fontSize: 14,
-                  color: palette.primary[100],
-                  marginTop: "0.5rem",
-                  marginLeft: "1.5rem",
-                  background: palette.primary.light
-                }}>
-                  <option value="">Selecione</option>
-                  {waves.map((wave) => (
-                    <option key={wave} value={wave}>
-                      {wave}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-            </FlexBetween>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart width={300} height={300}>
-                <Pie
-                  activeIndex={activeIndex}
-                  activeShape={renderActiveShape}
-                  data={pieData}
-                  cx="50%"
-                  cy="40%"
-                  innerRadius={55}
-                  outerRadius={100}
-                  fill="#6c757d"
-                  stroke="#F0F0F0"
-                  dataKey="numberOfAnswers"
-                  onMouseEnter={onPieEnter} />
-              </PieChart>
-            </ResponsiveContainer>
-          </DashboardBox>
-          <DashboardBox gridArea="f">
-          <Box ml="1.5rem" mt="1rem" mb="1rem" flexBasis="40%" textAlign="center">
-            <BoxHeader title="Distribuição por sexo" sideText="" />
-          </Box>
-          <ResponsiveContainer width="100%" height="80%">
-            <BarChart
-                width={500}
-                height={300}
-                data={wavesData?.countsByGenderAndWave}
-                stackOffset='sign'
-                reverseStackOrder={true}
-                layout="vertical"
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" hide={true}/>
-                <YAxis dataKey="wave" type="category"/>
-                <Tooltip formatter={tooltipFormatter} />
-                <Legend />
-                {/* <ReferenceLine x={0} stroke="#000" /> */}
-                <Bar dataKey="masculino" fill="#28a745" stackId="stack" />
-                <Bar dataKey="feminino" fill="#17a2b8" stackId="stack" />
-              </BarChart>
-            </ResponsiveContainer>
-          </DashboardBox>
-          {/* <DashboardBox gridArea="g">
-            
-              <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="left">
-                <BoxHeader title="Perguntas preditoras do comportamento empreendedor:" sideText="" />
-              </Box>
-              <Box>
-                <Typography sx={{
-                  fontSize: 20,
-                  color: palette.primary[200],
-                  mt: "1.5rem",
-                  mr: "1.5rem",
-                  ml: "2rem",
-                }}>
-                  12: Carrego dentro de mim, o desejo de ser dono do meu próprio negócio. Acredito que pode ser uma boa opção para realizar sonhos grandiosos que tenho.
-                </Typography>
-                <Typography sx={{
-                  fontSize: 20,
-                  color: palette.primary[400],
-                  mt: "1.5rem",
-                  mr: "1.5rem",
-                  ml: "2rem",
-                }}>
-                  24: Sinto-me inspirado(a) em pessoas que atingiram a independência financeira criando algum empreendimento.
-                </Typography>
-                <Typography sx={{
-                  fontSize: 20,
-                  color: palette.primary[600],
-                  mt: "1.5rem",
-                  mr: "1.5rem",
-                  ml: "2rem",
-                }}>
-                  25: Desde criança já inventava coisas para fazer alguma graninha extra, vendendo para a família ou conhecidos próximos.
-                </Typography>
-                </Box>
-                
-            </DashboardBox> */}
-          </>
-      }
-    </>
+        </FlexBetween>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart width={300} height={300}>
+            <Pie
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              data={pieData}
+              cx="50%"
+              cy="40%"
+              innerRadius={55}
+              outerRadius={100}
+              fill="#6c757d"
+              stroke="#F0F0F0"
+              dataKey="numberOfAnswers"
+              onMouseEnter={onPieEnter} />
+          </PieChart>
+        </ResponsiveContainer>
+      </DashboardBox>
+      
+      <DashboardBox className="sex" gridArea="e">
+        <Box ml="1.5rem" mt="1rem" mb="1rem" flexBasis="40%" textAlign="center">
+          <BoxHeader title="Distribuição por sexo" sideText="" />
+        </Box>
+        <ResponsiveContainer width="100%" height="80%">
+          <BarChart
+              width={500}
+              height={300}
+              data={wavesData?.countsByGenderAndWave}
+              stackOffset='sign'
+              reverseStackOrder={true}
+              layout="vertical"
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" hide={true}/>
+            <YAxis dataKey="wave" type="category"/>
+            <Tooltip formatter={tooltipFormatter} />
+            <Legend />
+            {/* <ReferenceLine x={0} stroke="#000" /> */}
+            <Bar dataKey="masculino" fill="#28a745" stackId="stack" />
+            <Bar dataKey="feminino" fill="#17a2b8" stackId="stack" />
+          </BarChart>
+        </ResponsiveContainer>
+      </DashboardBox>
+      
+      </>
+  }
+  </>
   )
 }
 

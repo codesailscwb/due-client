@@ -1,4 +1,4 @@
-import { ThemeProvider, CssBaseline, Box } from "@mui/material";
+import { ThemeProvider, CssBaseline, Box, Button } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { themeSettings } from "./theme";
@@ -12,7 +12,7 @@ import Predictions from "./scenes/predictions";
 
 function App() {
   const theme = useMemo(() => createTheme(themeSettings), [])
-  return (
+    return (
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
@@ -25,6 +25,7 @@ function App() {
               <Route path="/upload" element={<Upload />} />
               {/* <Route path="/predictions" element={<Predictions />} /> */}
             </Routes>
+            
           </Box>
         </ThemeProvider>
       </BrowserRouter>

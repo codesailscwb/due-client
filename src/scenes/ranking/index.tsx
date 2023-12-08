@@ -1,56 +1,50 @@
 import BoxHeader from '@/components/BoxHeader';
 import DashboardBox from '@/components/DashboardBox';
 import FlexBetween from '@/components/FlexBetween';
-import { useGetRankingsQuery, useGetXLSlinesQuery, useGetSurveysQuery } from '@/state/api';
-import { GetSurveyResponse, Waves } from '@/state/types';
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useGetRankingsQuery } from '@/state/api';
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { useEffect, useMemo, useState } from "react";
-import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Sector, BarChart, ReferenceLine, Bar } from 'recharts';
-import { v4 as uuidv4 } from "uuid";
-
-
 
 const Ranking = () => {
   const { data: ranking } = useGetRankingsQuery(); 
   const { palette } = useTheme();
-  const [rowsDataGrid, setRowsDataGrid] = useState<any>([]);
-  
+      
   const columns: GridColDef[] = [
     {
       field: 'wave',
       headerName: 'Onda',
-      width:180,
+      width:100,
     },
     {
       field: 'university',
       headerName: 'Instituição',
-      width:180,
+      width:100,
     },
     {
       field: 'fullName',
       headerName: 'Nome',
-      width:180,
+      width:210,
     },
     {
       field: 'total',
       headerName: 'Total',
-      width:180,
+      width:100,
     },
     {
       field: 'behavior',
       headerName: 'Comportamento',
-      width:180,
+      width:110,
     },
     {
       field: 'personality',
       headerName: 'Personalidade',
-      width:180,
+      width:110,
     },
     {
       field: 'hability',
       headerName: 'Habilidade Natural',
-      width:180,
+      width:110,
     },
   ];
 
@@ -87,8 +81,8 @@ const Ranking = () => {
     <>
       {!rankingList ? "Carregando dados" : 
       <>
-        <DashboardBox >
-             <div style={{ height: 850, width: "100%" }}>
+        <DashboardBox className="ranking" >
+             <div style={{ height: "90vh", width: "100%" }}>
               <Box
                 mt="0.5rem"
                 p="0 0.5rem"
@@ -115,23 +109,23 @@ const Ranking = () => {
                   }
                 }}
               >
-                <DataGrid 
-                  rows={rankingList}
-                  getRowId={(row) => row.id}
-                  initialState={{
-                    pagination: {
-                      paginationModel: {
-                        pageSize: 50,
+                  <DataGrid 
+                    slots={{ toolbar: GridToolbar }}
+                    rows={rankingList}
+                    getRowId={(row) => row.id}
+                    initialState={{
+                      pagination: {
+                        paginationModel: {
+                          pageSize: 50,
+                        },
                       },
-                    },
-                    sorting: {
-                      sortModel: [{ field: 'total', sort: 'desc' }],
-                    },
-                  }}
-                  pageSizeOptions={[5]}
-                  checkboxSelection
-                  disableRowSelectionOnClick
-                  columns={columns} />
+                      sorting: {
+                        sortModel: [{ field: 'total', sort: 'desc' }],
+                      },
+                    }}
+                    columns={columns}
+                    pageSizeOptions={[5]}
+                  />
                 </Box>
               </div>  
         </DashboardBox>

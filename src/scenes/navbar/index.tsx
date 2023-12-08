@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import FlexBetween from '@/components/FlexBetween';
 import PixIcon from "@mui/icons-material/Pix"
-import { Typography, Box, useTheme  } from '@mui/material';
+import { Typography, Box, useTheme, Button  } from '@mui/material';
 
 const Navbar = () => {
   const { palette } = useTheme();
-
   const [selected, setSelected] = useState('dashboard');
+
   return (
     <FlexBetween mb="0.25rem" p="0.5rem 0rem" color={palette.grey[900]}>
       {/* LEFT SIDE */}
@@ -15,6 +15,7 @@ const Navbar = () => {
         <PixIcon sx={{ fontSize: "28px" }}/>
         <Typography color={palette.grey[900]} fontSize="16px">Diagnóstico Universitário Empreendedor SEBRAE</Typography>
       </FlexBetween>
+
 
       {/* RIGHT SIDE */}
       <FlexBetween gap="2rem">
@@ -66,6 +67,7 @@ const Navbar = () => {
               Predictions
             </Link>
         </Box>
+          
       </FlexBetween>
     </FlexBetween>
 
