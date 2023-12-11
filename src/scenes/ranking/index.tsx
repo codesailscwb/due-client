@@ -2,49 +2,69 @@ import BoxHeader from '@/components/BoxHeader';
 import DashboardBox from '@/components/DashboardBox';
 import FlexBetween from '@/components/FlexBetween';
 import { useGetRankingsQuery } from '@/state/api';
-import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
+import { Box, Button, useTheme } from "@mui/material";
+import DataGrid from 'react-data-grid';
 import { useEffect, useMemo, useState } from "react";
+import 'react-data-grid/lib/styles.css';
+import { Row, SortColumn } from '@/state/types';
+import { exportToCsv, exportToPdf } from './exportUtils';
+
+type Comparator = (a: Row, b: Row) => number;
+
+function getComparator(sortColumn: string): Comparator {
+  switch (sortColumn) {
+    case 'fullName':
+    case 'university':
+    case 'wave':
+      return (a, b) => {
+        return a[sortColumn].localeCompare(b[sortColumn]);
+      };
+    
+    case 'behavior':
+    case 'personality':
+    case 'hability':
+    case 'total':
+    return (a, b) => {
+      return a[sortColumn] - b[sortColumn];
+    };
+    default:
+      throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+  }
+}
 
 const Ranking = () => {
   const { data: ranking } = useGetRankingsQuery(); 
-  const { palette } = useTheme();
+  const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
+  const [rows, setRows] = useState(createRows);
       
-  const columns: GridColDef[] = [
+  const columns = [
     {
-      field: 'wave',
-      headerName: 'Onda',
-      width:100,
+      key: 'wave',
+      name: 'Onda',
     },
     {
-      field: 'university',
-      headerName: 'Instituição',
-      width:100,
+      key: 'university',
+      name: 'Instituição',
     },
     {
-      field: 'fullName',
-      headerName: 'Nome',
-      width:210,
+      key: 'fullName',
+      name: 'Nome',
     },
     {
-      field: 'total',
-      headerName: 'Total',
-      width:100,
+      key: 'total',
+      name: 'Total',
     },
     {
-      field: 'behavior',
-      headerName: 'Comportamento',
-      width:110,
+      key: 'behavior',
+      name: 'Comportamento',
     },
     {
-      field: 'personality',
-      headerName: 'Personalidade',
-      width:110,
+      key: 'personality',
+      name: 'Personalidade',
     },
     {
-      field: 'hability',
-      headerName: 'Habilidade Natural',
-      width:110,
+      key: 'hability',
+      name: 'Habilidade Natural',
     },
   ];
 
@@ -56,7 +76,7 @@ const Ranking = () => {
         retVal += charset.charAt(Math.floor(Math.random() * n));
     }
     return retVal;
-}
+  }
 
   const rankingList = useMemo(() => {
     return (
@@ -75,59 +95,102 @@ const Ranking = () => {
         };
       })
     );
-  }, [ranking]);   
+  }, [ranking]); 
+
+  function createRows(): readonly Row[] {
+    const rows: Row[] = [];
+    if(ranking === undefined) return [];
+    for (let i = 0; i < ranking?.length; i++) {
+      rows.push({
+        id: i,
+        fullName: ranking[i].fullName,
+        university: ranking[i].university,
+        wave: ranking[i].wave,
+        behavior: ranking[i].categoryRanking.totalC1,
+        personality: ranking[i].categoryRanking.totalC2,
+        hability: ranking[i].categoryRanking.totalC1,
+        total: ranking[i].total
+      });
+    }
+    console.log('rows', rows)
+    return rows;
+  }
+
+  const sortedRows = useMemo((): readonly Row[] => {
+    if (sortColumns.length === 0) return rows;
+
+    return [...rows].sort((a, b) => {
+      for (const sort of sortColumns) {
+        const comparator = getComparator(sort.columnKey);
+        const compResult = comparator(a, b);
+        if (compResult !== 0) {
+          return sort.direction === 'ASC' ? compResult : -compResult;
+        }
+      }
+      return 0;
+    });
+  }, [rows, sortColumns]);
+
+  function ExportButton({
+    onExport,
+    children
+  }: {
+    onExport: () => Promise<unknown>;
+    children: React.ReactChild;
+  }) {
+    const [exporting, setExporting] = useState(false);
+    return (
+      <Button
+        type="button"
+        disabled={exporting}
+        onClick={async () => {
+          setExporting(true);
+          await onExport();
+          setExporting(false);
+        }}
+      >
+        {exporting ? 'Exporting' : children}
+      </Button>
+    );
+  }
+
+  const gridElement = (
+    <DataGrid 
+      rows={sortedRows}
+      columns={columns}
+      defaultColumnOptions={{
+        sortable: true,
+        resizable: true
+      }}
+      sortColumns={sortColumns}
+      onSortColumnsChange={setSortColumns}
+      className="fill-grid"
+    />
+  )
 
   return (
     <>
       {!rankingList ? "Carregando dados" : 
       <>
-        <DashboardBox className="ranking" >
-             <div style={{ height: "90vh", width: "100%" }}>
-              <Box
-                mt="0.5rem"
-                p="0 0.5rem"
-                height="100%"
-                sx={{
-                  "& .MuiDataGrid-root": {
-                    color: palette.grey[900],
-                    border: "none",
-                  },
-                  "& .MuiDataGrid-cell": {
-                    borderBottom: `1px solid ${palette.grey[800]} !important`,
-                  },
-                  "& .MuiDataGrid-columnHeaders": {
-                    borderBottom: `1px solid ${palette.grey[800]} !important`,
-                  },
-                  "& .MuiDataGrid-columnSeparator": {
-                    visibility: "hidden",
-                  },
-                  "& .MuiTablePagination-displayedRows": {
-                    color: palette.grey[900],
-                  },
-                  "& .MuiButtonBase-root":{
-                    color: palette.grey[900],
-                  }
-                }}
-              >
-                  <DataGrid 
-                    slots={{ toolbar: GridToolbar }}
-                    rows={rankingList}
-                    getRowId={(row) => row.id}
-                    initialState={{
-                      pagination: {
-                        paginationModel: {
-                          pageSize: 50,
-                        },
-                      },
-                      sorting: {
-                        sortModel: [{ field: 'total', sort: 'desc' }],
-                      },
-                    }}
-                    columns={columns}
-                    pageSizeOptions={[5]}
-                  />
-                </Box>
-              </div>  
+        <DashboardBox>
+          <div style={{ height: "90vh", width: "100%" }}>
+          <Box
+            mt="0.5rem"
+            p="0 0.5rem"
+            height="100%"
+            width="100%"
+          >   
+            <div>
+              <ExportButton onExport={() => exportToCsv(gridElement, 'DUE-Ranking.csv')}>
+                Exportar para CSV
+              </ExportButton>
+              <ExportButton onExport={() => exportToPdf(gridElement, 'DUE-Ranking.pdf')}>
+                Exportar para PDF
+              </ExportButton>
+            </div>
+              {gridElement}
+            </Box>
+          </div>  
         </DashboardBox>
       </>
       }

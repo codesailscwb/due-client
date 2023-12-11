@@ -442,14 +442,14 @@ const Upload = () => {
             <Typography sx={{
               mt: "1rem",
               color: palette.primary[500],
-              backgroundColor: palette.grey[100],
+              backgroundColor: '#e0e0e0',
             }}>
               Instituição: {form.university}
             </Typography>
             <Typography sx={{
               mt: "1rem",
               color: palette.primary[500],
-              backgroundColor: palette.grey[100],
+              backgroundColor: '#e0e0e0',
             }}>
               Onda: {form.wave}
             </Typography>

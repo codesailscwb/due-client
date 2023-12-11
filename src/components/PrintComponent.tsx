@@ -17,5 +17,4 @@ const PrintComponent = ({ children }: PrintComponentProps) => {
       </div>
   );
 };
-
 export default PrintComponent;

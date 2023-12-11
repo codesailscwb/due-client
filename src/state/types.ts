@@ -87,6 +87,17 @@ export interface GetSurveyResponse {
   updatedAt: string;
 }
 
+export interface Row {
+  id: string | number;
+  fullName: string;
+  university: string;
+  wave: string;
+  behavior: number;
+  personality: number;
+  hability: number;
+  total: number;
+}
+
 export interface GetRankingResponse {
   fullName: string;
   university: string;
@@ -141,3 +152,11 @@ export interface ExpensesByCategoryX {
   supplies: number;
   services: number;
 }
+
+export interface SortColumn {
+  readonly columnKey: string;
+  readonly direction: SortDirection;
+}
+
+export type SortDirection = 'ASC' | 'DESC';
+
