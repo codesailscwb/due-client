@@ -108,7 +108,7 @@ const Ranking = () => {
         wave: ranking[i].wave,
         behavior: ranking[i].categoryRanking.totalC1,
         personality: ranking[i].categoryRanking.totalC2,
-        hability: ranking[i].categoryRanking.totalC1,
+        hability: ranking[i].categoryRanking.totalC3,
         total: ranking[i].total
       });
     }
