@@ -25,15 +25,20 @@ const defaultFormFields = {
   password: '',
 }
 
-const logGoogleUser = async () => {
-  const response = await signInWithGooglePopup();
-  console.log(response);
-}
+
 
 function Home() {
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { email, password } = formFields
   const navigate = useNavigate()
+
+  const logGoogleUser = async () => {
+    const response = await signInWithGooglePopup();
+    console.log(response);
+    if (response) {
+      navigate('/dashboard')
+    }
+  }
 
   const resetFormFields = () => {
     return (
@@ -50,7 +55,7 @@ function Home() {
 
       if (userCredential) {
         resetFormFields()
-        navigate('/profile')
+        navigate('/dashboard')
       }
     } catch (error:any) {
       console.log('User Sign In Failed', error.message);
