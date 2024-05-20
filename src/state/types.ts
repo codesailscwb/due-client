@@ -115,7 +115,8 @@ export interface XLS {
   university: string;
   wave: string;
   fullName: string;
-  birthdate: string;
+  // birthdate: string;
+  age: number;
   gender: string;
   question01: number;
   question02: number;

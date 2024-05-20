@@ -5,7 +5,133 @@ import { useGetRankingsQuery, useGetXLSlinesQuery, useGetSurveysQuery } from '@/
 import { GetSurveyResponse, Waves } from '@/state/types';
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Sector, BarChart, ReferenceLine, Bar } from 'recharts';
+import { XLS } from '../../state/types';
+import { 
+  CartesianGrid, 
+  Cell, 
+  Legend, 
+  Line, 
+  LineChart, 
+  Pie, 
+  PieChart, 
+  ResponsiveContainer, 
+  Tooltip, 
+  XAxis, 
+  YAxis, 
+  Sector, 
+  BarChart, 
+  ReferenceLine, 
+  Bar, 
+  ScatterChart,
+  ZAxis,
+  Scatter
+} from 'recharts';
+
+interface Wave {
+  wave: string;
+}
+
+interface Person {
+  fullName: string;
+  age: number;
+}
+
+interface Props {
+  person: Person;
+  waveInfo: Wave;
+}
+
+interface Row {
+  fullName: string;
+  age: string;
+}
+
+interface Wave {
+  wave: string;
+  rows: Row[];
+}
+
+interface AgeGroup {
+  ageGroup: string;
+  index: number;
+  count: number;
+}
+
+interface AgeGroupStats {
+  [key: string]: AgeGroup[];
+}
+
+const ageGroups: AgeGroup[] = [
+  { ageGroup: "<= 20", index: 1, count: 0 },
+  { ageGroup: "21-25", index: 2, count: 0 },
+  { ageGroup: "26-30", index: 3, count: 0 },
+  { ageGroup: "31-35", index: 4, count: 0 },
+  { ageGroup: "36-40", index: 5, count: 0 },
+  { ageGroup: "41-45", index: 6, count: 0 },
+  { ageGroup: "46-50", index: 7, count: 0 },
+  { ageGroup: "51-55", index: 8, count: 0 },
+  { ageGroup: "56-60", index: 9, count: 0 },
+  { ageGroup: "> 61", index: 10, count: 0 },
+];
+
+function processSurveyData(data: GetSurveyResponse[]): Record<string, AgeGroup[]> {
+  const ageGroupsTemplate: AgeGroup[] = [
+    { ageGroup: "<= 20", index: 1, count: 0 },
+    { ageGroup: "21-25", index: 2, count: 0 },
+    { ageGroup: "26-30", index: 3, count: 0 },
+    { ageGroup: "31-35", index: 4, count: 0 },
+    { ageGroup: "36-40", index: 5, count: 0 },
+    { ageGroup: "41-45", index: 6, count: 0 },
+    { ageGroup: "46-50", index: 7, count: 0 },
+    { ageGroup: "51-55", index: 8, count: 0 },
+    { ageGroup: "56-60", index: 9, count: 0 },
+    { ageGroup: "> 61", index: 10, count: 0 },
+  ];
+
+  const result: Record<string, AgeGroup[]> = {};
+
+  data.forEach((survey) => {
+    const { wave, rows } = survey;
+
+    // Ensure there's an entry for the wave in the result object
+    if (!result[wave]) {
+      result[wave] = JSON.parse(JSON.stringify(ageGroupsTemplate)) as AgeGroup[];
+    }
+
+    rows.forEach((rowArray) => {
+      //@ts-ignore
+      rowArray.forEach((row) => {
+        const age = row.age;
+
+        // Group ages
+        if (age <= 20) {
+          result[wave][0].count++;
+        } else if (age <= 25) {
+          result[wave][1].count++;
+        } else if (age <= 30) {
+          result[wave][2].count++;
+        } else if (age <= 35) {
+          result[wave][3].count++;
+        } else if (age <= 40) {
+          result[wave][4].count++;
+        } else if (age <= 45) {
+          result[wave][5].count++;
+        } else if (age <= 50) {
+          result[wave][6].count++;
+        } else if (age <= 55) {
+          result[wave][7].count++;
+        } else if (age <= 60) {
+          result[wave][8].count++;
+        } else {
+          result[wave][9].count++;
+        }
+      });
+    });
+  });
+
+  return result;
+}
+
 
 const Row1 = () => {
   const { data: ranking } = useGetRankingsQuery();
@@ -14,6 +140,78 @@ const Row1 = () => {
   const [waves, setWaves] = useState<string[]>([]);
   const [selectedWave, setSelectedWave] = useState<string>('');
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const ageGroupsByWave = processSurveyData(survey!);
+
+  const renderTooltip = (props: { active: any; payload: any; }) => {
+    const { active, payload } = props;
+
+    if (active && payload && payload.length) {
+      const data = payload[0] && payload[0].payload;
+
+      return (
+        <div
+          style={{
+            backgroundColor: '#fff',
+            border: '1px solid #999',
+            margin: 0,
+            padding: 10,
+          }}
+        >
+          <p>{data.ageGroup}</p>
+          <p>
+            <span>Qtde: </span>
+            {data.count}
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+  
+  const wave202301 = [
+    {ageGroup: 'até 20', index: 1, count: 157}, 
+    {ageGroup: '21-25', index: 1, count: 73},
+    {ageGroup: '26-30', index: 1, count: 15},
+    {ageGroup: '31-35', index: 1, count: 8},
+    {ageGroup: '36-40', index: 1, count: 3},
+    {ageGroup: '41-45', index: 1, count: 2},
+    {ageGroup: '46-50', index: 1, count: 2},
+    {ageGroup: '51-55', index: 1, count: 1},
+    {ageGroup: '56-60', index: 1, count: 0},
+    {ageGroup: 'mais de 61', index: 1, count: 3}
+]
+
+ const wave202302 = [
+    {ageGroup: 'até 20', index: 1, count: 75},
+    {ageGroup: '21-25', index: 1, count: 24},
+    {ageGroup: '26-30', index: 1, count: 11},
+    {ageGroup: '31-35', index: 1, count: 0},
+    {ageGroup: '36-40', index: 1, count: 3},
+    {ageGroup: '41-45', index: 1, count: 1},
+    {ageGroup: '46-50', index: 1, count: 1},
+    {ageGroup: '51-55', index: 1, count: 2},
+    {ageGroup: '56-60', index: 1, count: 0},
+    {ageGroup: 'mais de 61', index: 1, count: 12}
+ ]
+
+ const parseDomain = () => [
+  0,
+  Math.max(
+    Math.max.apply(
+      null,
+      wave202301.map((entry) => entry.count),
+    ),
+    Math.max.apply(
+      null,
+      wave202302.map((entry) => entry.count),
+    ),
+  ),
+];
+
+const domain = parseDomain();
+const range = [16, 160];
 
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
@@ -212,12 +410,7 @@ const tooltipFormatter = (value: number, name: string) => {
       const countMaleRows = countRowsByGender(survey, 'masculino');
       const countFemaleRows = countRowsByGender(survey, 'Feminino');
       
-      console.log(`Number of rows for males: ${countMaleRows}`);
-      console.log(`Number of rows for females: ${countFemaleRows}`);
-
       const countsByGenderAndWave = countRowsByGenderAndWave(survey);
-
-      console.log(countsByGenderAndWave);
       
       let answersLastWave = 0;
      
@@ -277,14 +470,14 @@ const tooltipFormatter = (value: number, name: string) => {
       <DashboardBox className="numberOfAnswersAllWaves" gridArea="a">
         <Box ml="1.5rem" mt="1rem" flexBasis="40%" textAlign="center">
           <Typography sx={{
-            fontSize: 64,
+            fontSize: 54,
             color: palette.primary[300]
           }}>
             {!ranking ? "Carregando" :
               `${ranking.length}`}
           </Typography>
           <Typography m="0.3rem 0" sx={{
-            fontSize: 24,
+            fontSize: 20,
             color: palette.primary[300]
           }}>
             {!wavesData ? "Carregando" :
@@ -296,14 +489,14 @@ const tooltipFormatter = (value: number, name: string) => {
       <DashboardBox className="numberOfAnswersLastWave" gridArea="b">
         <Box ml="1.5rem" mt="1rem"  textAlign="center">
           <Typography sx={{
-            fontSize: 64,
+            fontSize: 54,
             color: palette.primary[300]
           }}>
             {!wavesData ? "Carregando" :
               `${wavesData.answersLastWave}`}
           </Typography>
           <Typography m="0.3rem 0" sx={{
-            fontSize: 24,
+            fontSize: 20,
             color: palette.primary[300]
           }}>
             {!wavesData ? "Carregando" :
@@ -430,7 +623,88 @@ const tooltipFormatter = (value: number, name: string) => {
           </BarChart>
         </ResponsiveContainer>
       </DashboardBox>
-      
+      <DashboardBox gridArea="f">
+        <Box ml="1.5rem" mt="1rem" mb="1rem" flexBasis="40%" textAlign="center">
+          <BoxHeader title="Distribuição por idade" sideText="" />
+        </Box>
+      <ResponsiveContainer width="100%" height={60}>
+          <ScatterChart
+            margin={{
+              top: 10,
+              right: 0,
+              bottom: 0,
+              left: 0,
+            }}
+          >
+            <XAxis
+              type="category"
+              dataKey="ageGroup"
+              interval={0}
+              tick={{ fontSize: 0 }}
+              tickLine={{ transform: 'translate(0, -6)' }}
+            />
+            <YAxis
+              type="number"
+              dataKey="index"
+              name="202301"
+              height={10}
+              width={80}
+              tick={false}
+              tickLine={false}
+              axisLine={false}
+              label={{ value: '202301', position: 'insideRight' }}
+            />
+            <ZAxis type="number" dataKey="count" domain={domain} range={range} />
+            <Tooltip cursor={{ strokeDasharray: '3 3' }} wrapperStyle={{ zIndex: 100 }} content={({ active, payload }) => {
+              if (active && payload) {
+                return renderTooltip({ active, payload });
+              }
+              return null;
+            }}/>
+            <Scatter data={wave202301} fill="#8884d8" />
+          </ScatterChart>
+        </ResponsiveContainer>
+
+        <ResponsiveContainer width="100%" height={60}>
+          <ScatterChart
+            width={800}
+            height={60}
+            margin={{
+              top: 10,
+              right: 0,
+              bottom: 0,
+              left: 0,
+            }}
+          >
+            <XAxis
+              type="category"
+              dataKey="ageGroup"
+              name="Faixa de idade"
+              interval={0}
+              tick={{ fontSize: 16 }}
+              tickLine={{ transform: 'translate(0, -6)' }}
+            />
+            <YAxis
+              type="number"
+              dataKey="index"
+              height={10}
+              width={80}
+              tick={false}
+              tickLine={false}
+              axisLine={false}
+              label={{ value: '202302', position: 'insideRight' }}
+            />
+            <ZAxis type="number" dataKey="count" domain={domain} range={range} />
+            <Tooltip cursor={{ strokeDasharray: '3 3' }} wrapperStyle={{ zIndex: 100 }} content={({ active, payload }) => {
+              if (active && payload) {
+                return renderTooltip({ active, payload });
+              }
+              return null;
+            }}/>
+            <Scatter data={wave202302} fill="#8884d8" />
+          </ScatterChart>
+        </ResponsiveContainer>
+      </DashboardBox>
       </>
   }
   </>

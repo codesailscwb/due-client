@@ -1,0 +1,80 @@
+[
+  {
+      "_id": "6560d9029a5a374e405bd38f",
+      "university": "UFPR",
+      "wave": "202301",
+      "rows": [
+          [
+              {
+                  "fullName": "Gustavo Schubert",
+                  "birthdate": 36557,
+                  "gender": "Masculino",
+                  "question01": 4,
+                  "question02": 4,
+                  "question03": 4,
+                  "question04": 4,
+                  "question05": 3,
+                  "question06": 3,
+                  "question07": 2,
+                  "question08": 4,
+                  "question09": 4,
+                  "question10": 4,
+                  "question11": 3,
+                  "question12": 4,
+                  "question13": 4,
+                  "question14": 4,
+                  "question15": 4,
+                  "question16": 4,
+                  "question17": 3,
+                  "question18": 4,
+                  "question19": 4,
+                  "question20": 4,
+                  "question21": 3,
+                  "question22": 4,
+                  "question23": 4,
+                  "question24": 4,
+                  "question25": 2,
+                  "question26": 3,
+                  "question27": 3,
+                  "question28": 4
+              }
+          ],
+          [
+              {
+                  "fullName": "Nicole Cantarin do Rosario",
+                  "birthdate": 36558,
+                  "gender": "Feminino",
+                  "question01": 4,
+                  "question02": 3,
+                  "question03": 3,
+                  "question04": 4,
+                  "question05": 3,
+                  "question06": 4,
+                  "question07": 3,
+                  "question08": 3,
+                  "question09": 1,
+                  "question10": 3,
+                  "question11": 4,
+                  "question12": 3,
+                  "question13": 3,
+                  "question14": 3,
+                  "question15": 1,
+                  "question16": 4,
+                  "question17": 3,
+                  "question18": 4,
+                  "question19": 4,
+                  "question20": 4,
+                  "question21": 3,
+                  "question22": 3,
+                  "question23": 4,
+                  "question24": 4,
+                  "question25": 4,
+                  "question26": 2,
+                  "question27": 4,
+                  "question28": 3
+              }
+          ]
+      ]
+  }
+]
+  

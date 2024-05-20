@@ -12,6 +12,9 @@ const gridTemplateLargeScreens = `
   "d e c"
   "d e c"
   "d e c"
+  "f f f"
+  "f f f"
+  "f f f"
 `;
 const gridTemplateSmallScreens = `
   "a"
